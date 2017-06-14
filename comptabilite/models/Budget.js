@@ -1,0 +1,17 @@
+/**
+ * Created by nour on 6/13/17.
+ */
+
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var categorie = require('../models/categorie.js');
+var BudgetSchema = new Schema({
+    name:String,
+    sousBudget : [{type:String}],
+    login:String,
+    categorie : [{ type: Schema.Types.ObjectId, ref: 'Categorie' }]
+});
+
+var budget = mongoose.model('Budget', BudgetSchema);
+
+module.exports = budget;
