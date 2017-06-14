@@ -8,7 +8,7 @@ var Budget = require('../models/Budget.js');
 
 var TransactionSchema = new Schema({
     //TransactionId:String,
-    montant:number,
+    montant:Number,
     Date : Date,
     Type:String,
     Description:String,

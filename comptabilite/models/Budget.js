@@ -4,7 +4,7 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var categorie = require('../models/categorie.js');
+var categorie = require('../models/Categorie.js');
 var BudgetSchema = new Schema({
     name:String,
     sousBudget : [{type:String}],

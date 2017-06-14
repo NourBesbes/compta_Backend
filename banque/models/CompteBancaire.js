@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 
 var CompteBancaireSchema = new Schema({
     name:String,
-    swift : string,
+    swift : String,
     IBAN:String,
     Banque:String
 

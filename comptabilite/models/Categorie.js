@@ -7,8 +7,8 @@ var Schema = mongoose.Schema;
 
 var CategorieSchema = new Schema({
     name:String,
-    compte_comptable: number,
-   // TVA: number,
+    compte_comptable: Number,
+   // TVA: Number,
 
 
 
