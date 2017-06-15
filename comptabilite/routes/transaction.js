@@ -4,11 +4,18 @@
 var express = require('express');
 var router = express.Router();
 var transaction = require('../controllers/Transaction');
+var Converter = require("csvtojson").Converter;
+var converter = require("xls-to-json");
+
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 router.get('/getAll', transaction.listAll);
+
+// Upload route.
+router.post('/upload', transaction.uploadFile)
+
 
 module.exports = router;
