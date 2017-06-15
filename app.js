@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
-var users = require('./routes/users');
+var user = require('./users/routes/user');
 var transaction = require('./comptabilite/routes/transaction');
 var app = express();
 var DB = "mongodb://admin:admin@ds023520.mlab.com:23520/devstriker";
@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/user', user);
 app.use('/transaction', transaction);
 
 mongoose.Promise = global.Promise;

@@ -66,7 +66,6 @@ module.exports= {
                             //save transactions to mongoose
                             Transaction.collection.insertMany(result, function(err,r) {
                                  })
-
                         }
                     }); }
                 fs.writeFile(new_path, data, function(err) {
