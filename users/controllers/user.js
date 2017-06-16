@@ -5,7 +5,16 @@
 var express = require('express');
 var user = require('../models/user.js');
 const util = require('util');
-var mandrill = require('node-mandrill')('tc7CdVvSVFY4dDYyEA6eYA');
+var nodemailer = require("nodemailer");
+
+var smtpTransport = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    auth: {
+        user: "devstrikerdev@gmail.com",
+        pass: "12345678dev"
+    }
+});
 function sendEmail ( _name, _email, _subject, _message) {
     mandrill('/messages/send', {
         message: {
@@ -31,14 +40,21 @@ module.exports= {
     },
     AddUsers: function(req,res,next) {
 
-        var _name = req.body.name;
-        var _email = req.body.email;
-        var _subject = "test";
-        var _messsage = "this is a test";
-
-        //implement your spam protection or checks.
-
-        sendEmail ( _name, _email, _subject, _messsage );
+        var mailOptions={
+            to : req.body.to ,
+            subject : "test",
+            text : "this is a test"
+        }
+        console.log(mailOptions);
+        smtpTransport.sendMail(mailOptions, function(error, response){
+            if(error){
+                console.log(error);
+                res.end("error");
+            }else{
+                console.log("Message sent: " + response.message);
+                res.end("sent");
+            }
+        });
     }
 
 
