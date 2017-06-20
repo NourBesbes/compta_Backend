@@ -11,6 +11,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/add', budget.addBudget);
+router.post('/addsousbudget/:id', budget.addSousBudget);
+
 router.get('/listAll', budget.listAll);
 
 

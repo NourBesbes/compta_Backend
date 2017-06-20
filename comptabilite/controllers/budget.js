@@ -24,7 +24,11 @@ module.exports= {
         });
     },
     addSousBudget: function (req, res, next) {
-        //TODO:
+        budget.update({_id:req.params.id}, {$addToSet: {sousBudget: req.body.sousBudget}}, {multi:  true},function (err, sousBudget) {
+            if (err)
+                return next(err);
+            console.log(sousBudget);
+        })
     },
     deleteBudget: function (req, res, next) {
         //TODO:
