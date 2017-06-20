@@ -11,8 +11,8 @@ module.exports= {
         comptebancaire= new CompteBancaire({
             name:req.body.name,
             swift :req.body.swift,
-            IBAN:req.body.iban,
-            Banque:req.body.banque
+            IBAN:req.body.IBAN,
+            Banque:req.body.Banque
         })
         comptebancaire.save(function(err) {
             if (err) throw err;
@@ -21,26 +21,28 @@ module.exports= {
     },
 
     deleteCompte: function (req, res, next) {
-        CompteBancaire.find({ name: req.body.name }, function(err, comptebancaire) {
+        CompteBancaire.findById(req.params.id , function(err, comptebancaire) {
             if (err) throw err;
 
             // delete him
             comptebancaire.remove(function(err) {
                 if (err) throw err;
 
-                console.log('User successfully deleted!');
+                console.log('Compte successfully deleted!');
             });
         });
     },
+
     listAll: function (req, res, next) {
         CompteBancaire.find({}, function(err, compte) {
             if (err) throw err;
-
             // object of all the users
             console.log(compte);
             res.json(compte)
         });
     },
+
+
     Synchroniser: function (req, res, next) {
         //TODO: Etudier l'integration d'API existantes de type "Banking"
     }

@@ -21,7 +21,7 @@ module.exports= {
     })
 },
 deleteCompany: function (req, res, next) {
-    company.find({ name: req.body.name }, function(err, comp) {
+    company.findById(req.params.id , function(err, comp) {
         if (err) throw err;
 
         // delete him
@@ -33,7 +33,8 @@ deleteCompany: function (req, res, next) {
     });
 },
 FindById: function (req, res, next) {
-    company.find({ Id: req.body.Id }, function(err, comp) {
+    company.findById(req.params.id , function(err, comp) {
+        res.json(comp);
         if (err) throw err;
     });
 
@@ -47,6 +48,5 @@ listAll: function(req,res,next) {
         res.json(comp)
     });
 }
-
 
 }

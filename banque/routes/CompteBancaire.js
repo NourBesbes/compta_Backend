@@ -12,8 +12,8 @@ var banque = require('../controllers/CompteBancaire');
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
-router.post('/ajoutercompte', banque.addCompte);
-router.post('/supprimercompte', banque.deleteCompte);
-router.get('/listecompte', banque.listAll);
+router.post('/add', banque.addCompte);
+router.delete('/delete/:id', banque.deleteCompte);
+router.get('/listall', banque.listAll);
 
 module.exports = router;
