@@ -42,6 +42,8 @@ module.exports= {
     deleteSousBudget: function (req, res, next) {
         budget.update({ _id: req.params.id }, { "$pull": { "sousBudget": req.body.sousBudget  }},
             { safe: true, multi:true }, function(err, obj) {
+                if (err) throw err;
+            }
     },
     FindByName: function (req, res, next) {
         User.find({ name: req.body.name }, function(err, budget) {
