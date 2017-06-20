@@ -13,10 +13,45 @@ var http = require('http'),
     formidable = require('formidable'),
     fs = require('fs'),
     path = require('path');
+var Recette=[];
+var Depenses =[];
+var i =0;
+var moment = require('moment');
 
 module.exports= {
 
     RemplirExCompt: function (req, res, next) {
+
+        Transaction.find({}, function (err, transaction) {
+            if (err)
+                return next(err);
+            transaction.forEach(function(j){
+                i++;
+                var startDateArr = req.body.startDate.split('/');
+                var startDate = new Date(startDateArr[2]+"-"+startDateArr[1]+"-"+startDateArr[0]);
+                var endDateArr = req.body.endDate.split('/');
+                var endDate = new Date(endDateArr[2]+"-"+endDateArr[1]+"-"+endDateArr[0]);
+
+                if (j.Debit&& startDate <= j.Date && j.Date <= endDate ){
+                    Depenses.push({" ":"-"+j.Debit})
+
+                }
+                else if (j.Credit&& req.body.startDate <= j.Date && j.Date <= req.body.endDate ){
+                    Recette.push({" ":"+"+j.Credit})
+
+                }
+            });
+            if (i=transaction.length){
+                res.json({"Depenses":Depenses,"Recettes":Recette})
+            }
+
+
+        });
+
+
+
+
+
         //TODO: Depenses + Recettes
     },
 
@@ -44,10 +79,27 @@ module.exports= {
 
                     //end_parsed will be emitted once parsing finished
                     var x=  csvConverter.on("end_parsed", function (jsonObj) {
+                       var dateArr ;
                         res.json(jsonObj) ;
                      //save transactions to mongoose
-                        Transaction.collection.insertMany(jsonObj, function(err,r) {
-                               })
+                        jsonObj.forEach(function(j){
+                            if(j.Date.indexOf("/") > -1) {
+                                dateArr = j.Date.split('/'); }
+                            else if(j.Date.indexOf("-") > -1) {
+                                dateArr = j.Date.split('-'); }
+                            var date = new Date(dateArr[2]+"-"+dateArr[1]+"-"+dateArr[0]);
+
+                            var newTransaction = new Transaction({
+                                Date :date ,
+                                Debit : j.Debit ,
+                                Credit : j.Credit ,
+                                Libelle : j.Libelle
+
+                            });
+                            newTransaction.save()
+                           // console.log(newTransaction)
+                        })
+
                     });
                     //read from file
                     fs.createReadStream(old_path).pipe(csvConverter);
@@ -63,9 +115,27 @@ module.exports= {
                             return err ;
                         } else {
                             res.json(result);
+                            var dateArr ;
                             //save transactions to mongoose
-                            Transaction.collection.insertMany(result, function(err,r) {
-                                 })
+                            result.forEach(function(j){
+                               if(j.Date.indexOf("/") > -1) {
+                                    dateArr = j.Date.split('/'); }
+                                else if(j.Date.indexOf("-") > -1) {
+                                    dateArr = j.Date.split('-'); }
+                                var date = new Date(dateArr[2]+"-"+dateArr[1]+"-"+dateArr[0]);
+                                console.log(j.Date,date)
+
+                                var newTransaction = new Transaction({
+                                    Date :date ,
+                                    Debit : j.Debit ,
+                                    Credit : j.Credit ,
+                                    Libelle : j.Libelle
+
+                                });
+                                newTransaction.save()
+                             //   console.log(newTransaction)
+                            })
+
                         }
                     }); }
                 fs.writeFile(new_path, data, function(err) {
@@ -86,9 +156,14 @@ module.exports= {
 
 
     listAll: function (req, res, next) {
-       //TODO : from DB
+        Transaction.find({}, function (err, transaction) {
+            if (err)
+                return next(err);
+            res.json(transaction)
+        });
 
-    },
+
+},
 
 
     FindById: function (req, res, next) {

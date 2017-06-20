@@ -8,14 +8,15 @@ var Budget = require('../models/Budget.js');
 
 var TransactionSchema = new Schema({
     //TransactionId:String,
-    montant:Number,
+    Debit:Number,
+    Credit:Number,
     Date : Date,
-    Type:String,
-    Description:String,
+    DateTransaction:Date,
+    TypePaiement:String,
+    Libelle:String,
     Remboursement : Boolean,
     budget : [{ type: Schema.Types.ObjectId, ref: 'Budget' }],
     CompteBancaire : [{ type: Schema.Types.ObjectId, ref: 'CompteBancaire' }],
-
 
 });
 
