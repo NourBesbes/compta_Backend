@@ -10,7 +10,6 @@ module.exports= {
         newbudget=new budget({
             name:req.body.name,
 
-
         });
         newbudget.save(function(err) {
             if (err) throw err;
@@ -25,7 +24,11 @@ module.exports= {
         });
     },
     addSousBudget: function (req, res, next) {
-
+        budget.update({_id:req.params.id}, {$addToSet: {sousBudget: req.body.sousBudget}}, {multi:  true},function (err, sousBudget) {
+            if (err)
+                return next(err);
+            console.log(sousBudget);
+        })
     },
     deleteBudget: function (req, res, next) {
         budget.findById(req.params.id , function(err, budget) {
@@ -43,14 +46,14 @@ module.exports= {
         budget.update({ _id: req.params.id }, { "$pull": { "sousBudget": req.body.sousBudget  }},
             { safe: true, multi:true }, function(err, obj) {
                 if (err) throw err;
-            }
+            });
     },
     FindByName: function (req, res, next) {
-        User.find({ name: req.body.name }, function(err, budget) {
+        budget.find({ name: req.params.name }, function(err, budget) {
             if (err) throw err;
 
-            // object of the user
-            console.log(budget);
+            // object of the budget
+            res.json(budget);
         });
     },
 
