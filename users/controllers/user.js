@@ -37,6 +37,7 @@ module.exports= {
     SignUp: function (req, res, next) {
         //TODO:
     },
+<<<<<<< HEAD
     AddUsers: function (req, res, next) {
 
         var mailOptions = {
@@ -50,6 +51,21 @@ module.exports= {
                 console.log(error);
                 res.end("error");
             } else {
+=======
+    AddUsers: function(req,res,next) {
+
+        var mailOptions={
+            to : req.body.to ,
+            subject : "test",
+            text : "this is a test"
+        }
+        console.log(mailOptions);
+        smtpTransport.sendMail(mailOptions, function(error, response){
+            if(error){
+                console.log(error);
+                res.end("error");
+            }else{
+>>>>>>> fb1a6d373fa2dfe10aadecebafbdbfe65a6780f6
                 console.log("Message sent: " + response.message);
                 res.end("sent");
             }
