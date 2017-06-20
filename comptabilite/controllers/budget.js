@@ -7,7 +7,17 @@ const util = require('util');
 module.exports= {
 
     addBudget: function (req, res, next) {
-        //TODO:
+        newbudget=new budget({
+            name:req.body.name,
+
+
+        });
+        newbudget.save(function(err) {
+            if (err) throw err;
+            console.log("budget added");
+
+        })
+    },
     },
     addSousBudget: function (req, res, next) {
         //TODO:
