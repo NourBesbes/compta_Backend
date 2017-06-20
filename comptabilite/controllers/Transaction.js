@@ -171,23 +171,23 @@ module.exports= {
 
     AddInfo:function (req,res) {
         var b ;
+        budget.find({name:req.body.budget}, function (err, res) {
+            console.log(res);
+            Transaction.update(
+                {_id:req.params.id},
+                {
+                    $set:{
+                      budget: res,
+                      sousBudget: req.body.sousBudget
 
-        var b = budget.find({"name":req.body.budget}, function (err, res) {
-            b=res ;
-            console.log(b);
+                }}
+                ,{new: true}, function (err,res) {
+                    if (err) return console.error(err);
+                })
+
             if (err) throw err;
 
         });
-            if (b) {
-                Transaction.update({_id: req.params.id}, {
-                    budget: b,
-                    sousBudget: req.body.sousBudget
-                }, function (err, affected, resp) {
-                    console.log("yeeeey");
-                    res.json(resp)
-                })
-            }
-
+        res.json("ok")
     }
-
 }
