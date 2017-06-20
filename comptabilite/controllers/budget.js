@@ -10,6 +10,16 @@ module.exports= {
         newbudget=new budget({
             name:req.body.name,
 
+<<<<<<< HEAD
+
+        });
+        newbudget.save(function(err) {
+            if (err) throw err;
+            console.log("budget added");
+
+        })
+    },
+=======
         });
         newbudget.save(function(err) {
             if (err) throw err;
@@ -22,6 +32,7 @@ module.exports= {
                 return next(err);
             res.json(budget)
         });
+>>>>>>> 83820ccfa51e0b72e6ca63088bef79c3157b7b17
     },
     addSousBudget: function (req, res, next) {
         budget.update({_id:req.params.id}, {$addToSet: {sousBudget: req.body.sousBudget}}, {multi:  true},function (err, sousBudget) {
