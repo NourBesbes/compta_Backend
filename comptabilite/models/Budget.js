@@ -8,7 +8,7 @@ var categorie = require('../models/Categorie.js');
 var BudgetSchema = new Schema({
     name:String,
     sousBudget : [{type:String}],
-    login:String,
+  //  login:String,
     categorie : [{ type: Schema.Types.ObjectId, ref: 'Categorie' }]
 });
 

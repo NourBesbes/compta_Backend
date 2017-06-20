@@ -13,6 +13,10 @@ router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 router.get('/getAll', transaction.listAll);
+router.get('/getExComp', transaction.RemplirExCompt);
+router.post('/getExComp', transaction.RemplirExCompt);
+router.post('/addinfo/:id', transaction.AddInfo);
+
 
 // Upload route.
 router.post('/upload', transaction.uploadFile)

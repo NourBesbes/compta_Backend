@@ -1,7 +1,6 @@
 /**
  * Created by nour on 6/13/17.
  */
-
 var express = require('express');
 var user = require('../models/user.js');
 const util = require('util');
@@ -38,6 +37,7 @@ module.exports= {
     SignUp: function (req, res, next) {
         //TODO:
     },
+
     AddUsers: function(req,res,next) {
 
         var mailOptions={
@@ -56,6 +56,4 @@ module.exports= {
             }
         });
     }
-
-
 }

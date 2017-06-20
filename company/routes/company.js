@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 router.post('/addcompany', company.addCompany);
-router.post('/deletecompany', company.deleteCompany);
-router.post('/findcompany', company.FindById);
-router.post('/findallcompanies', company.listAll);
+router.delete('/deletecompany/:id', company.deleteCompany);
+router.get('/findcompany/:id', company.FindById);
+router.get('/listalll', company.listAll);
 module.exports = router;
