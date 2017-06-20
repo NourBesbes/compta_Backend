@@ -3,6 +3,8 @@
  */
 var express = require('express');
 var Transaction = require('../models/Transaction.js');
+var budget = require('../models/Budget.js');
+
 const util = require('util');
 //Converter Class
 var Converter = require("csvtojson").Converter;
@@ -27,16 +29,17 @@ module.exports= {
                 return next(err);
             transaction.forEach(function(j){
                 i++;
+                if (req.body.endDate&&req.body.startDate){
                 var startDateArr = req.body.startDate.split('/');
                 var startDate = new Date(startDateArr[2]+"-"+startDateArr[1]+"-"+startDateArr[0]);
                 var endDateArr = req.body.endDate.split('/');
-                var endDate = new Date(endDateArr[2]+"-"+endDateArr[1]+"-"+endDateArr[0]);
+                var endDate = new Date(endDateArr[2]+"-"+endDateArr[1]+"-"+endDateArr[0]);}
 
-                if (j.Debit&& startDate <= j.Date && j.Date <= endDate ){
+                if ((j.Debit&& startDate <= j.Date && j.Date <= endDate )|(j.Debit&&!req.body.startDate&&!req.body.endDate)){
                     Depenses.push({" ":"-"+j.Debit})
 
                 }
-                else if (j.Credit&& req.body.startDate <= j.Date && j.Date <= req.body.endDate ){
+                else if ((j.Credit&& req.body.startDate <= j.Date && j.Date <= req.body.endDate )|(j.Credit&&!req.body.startDate&&!req.body.endDate)){
                     Recette.push({" ":"+"+j.Credit})
 
                 }
@@ -48,11 +51,6 @@ module.exports= {
 
         });
 
-
-
-
-
-        //TODO: Depenses + Recettes
     },
 
     uploadFile : function (req,res) {
@@ -60,7 +58,6 @@ module.exports= {
         form.parse(req, function(err, fields, files) {
             // `file` is the name of the <input> field of type `file`
             console.log(files);
-            //return res.json("sa7itek")
             var old_path = files.file.path,
                 file_size = files.file.size,
                 file_ext = files.file.name.split('.').pop(),
@@ -165,10 +162,32 @@ module.exports= {
 
 },
 
-
     FindById: function (req, res, next) {
-        //TODO:
+        Transaction.findById(req.params.id, function (err, comp) {
+            res.json(comp);
+            if (err) throw err;
+        })
     },
 
+    AddInfo:function (req,res) {
+        var b ;
+
+        var b = budget.find({"name":req.body.budget}, function (err, res) {
+            b=res ;
+            console.log(b);
+            if (err) throw err;
+
+        });
+            if (b) {
+                Transaction.update({_id: req.params.id}, {
+                    budget: b,
+                    sousBudget: req.body.sousBudget
+                }, function (err, affected, resp) {
+                    console.log("yeeeey");
+                    res.json(resp)
+                })
+            }
+
+    }
 
 }

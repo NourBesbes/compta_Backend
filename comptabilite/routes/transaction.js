@@ -15,6 +15,8 @@ router.get('/', function(req, res, next) {
 router.get('/getAll', transaction.listAll);
 router.get('/getExComp', transaction.RemplirExCompt);
 router.post('/getExComp', transaction.RemplirExCompt);
+router.post('/addinfo/:id', transaction.AddInfo);
+
 
 // Upload route.
 router.post('/upload', transaction.uploadFile)

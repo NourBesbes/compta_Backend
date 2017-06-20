@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var user = require('./users/routes/user');
 var transaction = require('./comptabilite/routes/transaction');
+var budget = require('./comptabilite/routes/budget');
 var banque = require('./banque/routes/CompteBancaire');
 var company = require('./company/routes/company');
 var app = express();
@@ -30,6 +31,7 @@ app.use('/user', user);
 app.use('/company', company);
 app.use('/banque', banque);
 app.use('/transaction', transaction);
+app.use('/budget', budget);
 mongoose.Promise = global.Promise;
 mongoose.connect(DB, function(err) {
     if (err) {

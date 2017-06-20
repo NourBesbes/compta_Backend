@@ -14,8 +14,9 @@ var TransactionSchema = new Schema({
     DateTransaction:Date,
     TypePaiement:String,
     Libelle:String,
-    Remboursement : Boolean,
+    Remboursement : Number,
     budget : [{ type: Schema.Types.ObjectId, ref: 'Budget' }],
+    sousBudget : String ,
     CompteBancaire : [{ type: Schema.Types.ObjectId, ref: 'CompteBancaire' }],
 
 });
