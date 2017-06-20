@@ -10,10 +10,13 @@ router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 
-router.post('/add', budget.addBudget);
+router.post('/addbudget', budget.addBudget);
+router.post('/addsousbudget/:id', budget.addSousBudget);
 router.get('/listAll', budget.listAll);
 
-
+router.delete('/deletebudget', budget.deleteBudget);
+router.post('/deleteousbudget', budget.deleteSousBudget);
+router.get('/listBudgets', budget.FindByName);
 
 
 module.exports = router;

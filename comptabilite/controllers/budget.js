@@ -10,16 +10,7 @@ module.exports= {
         newbudget=new budget({
             name:req.body.name,
 
-<<<<<<< HEAD
 
-        });
-        newbudget.save(function(err) {
-            if (err) throw err;
-            console.log("budget added");
-
-        })
-    },
-=======
         });
         newbudget.save(function(err) {
             if (err) throw err;
@@ -32,19 +23,33 @@ module.exports= {
                 return next(err);
             res.json(budget)
         });
->>>>>>> 83820ccfa51e0b72e6ca63088bef79c3157b7b17
     },
     addSousBudget: function (req, res, next) {
-        //TODO:
+
     },
     deleteBudget: function (req, res, next) {
-        //TODO:
+        budget.findById(req.params.id , function(err, budget) {
+            if (err) throw err;
+
+            // delete him
+            comp.remove(function(err) {
+                if (err) throw err;
+
+                console.log('company successfully deleted!');
+            });
+        });
     },
     deleteSousBudget: function (req, res, next) {
-        //TODO:
+        budget.update({ _id: req.params.id }, { "$pull": { "sousBudget": req.body.sousBudget  }},
+            { safe: true, multi:true }, function(err, obj) {
     },
     FindByName: function (req, res, next) {
-        //TODO:
+        User.find({ name: req.body.name }, function(err, budget) {
+            if (err) throw err;
+
+            // object of the user
+            console.log(budget);
+        });
     },
 
 }
