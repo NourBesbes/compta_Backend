@@ -6,7 +6,7 @@ var router = express.Router();
 var transaction = require('../controllers/Transaction');
 var Converter = require("csvtojson").Converter;
 var converter = require("xls-to-json");
-
+var multer = require("multer");
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -16,7 +16,9 @@ router.get('/getAll', transaction.listAll);
 router.get('/getExComp', transaction.RemplirExCompt);
 router.post('/getExComp', transaction.RemplirExCompt);
 router.post('/addinfo/:id', transaction.AddInfo);
-
+router.post("/upload2", multer({dest: "./uploads/"}).array("uploads", 12), function(req, res) {
+    console.log(req.files);
+});
 
 // Upload route.
 router.post('/upload', transaction.uploadFile)
