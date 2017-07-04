@@ -62,7 +62,7 @@ module.exports= {
           // if user is found and password is right create a token
           var token = jwt.encode(user, config.secret);
           // return the information including token as JSON
-          res.json({success: true, token: 'JWT ' + token, role:user.role,username:user.first_name});
+          res.json({success: true, token: 'JWT ' + token, role:user.role,username:user.username});
         } else {
           res.send({success: false, msg: 'Authentication failed. Wrong password.'});
         }
@@ -86,9 +86,9 @@ module.exports= {
     // save the user
     newUser.save(function(err) {
       if (err) {
-        return res.json({success: false, msg: 'Username already exists.'});
+        return res.json({success: false, msg: 'Username already exists.',err:err});
       }
-      res.json({success: true, msg: 'Successful created new user.',username:user.first_name});
+      res.json({success: true, msg: 'Successful created new user.',username:user.username});
     });
   }
 },
@@ -117,5 +117,18 @@ module.exports= {
 
       res.status(200).json(users);
     });
-  }
+  },
+    findUser:function(req, res, next) {
+        user.findOne({
+            username: req.body.username
+        }, function(err, user) {
+            if (err) throw err;
+
+            if (!user) {
+                return res.status(404).json();
+            } else res.status(200).json(user);
+
+
+            });
+    }
 }
