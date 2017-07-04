@@ -12,11 +12,10 @@ var banque = require('./banque/routes/CompteBancaire');
 var company = require('./company/routes/company');
 var app = express();
 var DB = "mongodb://admin:admin@ds023520.mlab.com:23520/devstriker";
-var mongoose = require('mongoose');
+var morgan      = require('morgan');
+var mongoose    = require('mongoose');
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+
 
 //enable cors
 app.use(function(req, res, next) {
@@ -28,8 +27,9 @@ app.use(function(req, res, next) {
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// get our request parameters
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

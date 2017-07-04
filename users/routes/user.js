@@ -11,5 +11,7 @@ router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 router.post('/addusers', users.AddUsers);
-
+router.post('/authenticate',users.login);
+router.post('/signup1',users.SignUp);
+router.get('/getall',users.getUsers);
 module.exports = router;
