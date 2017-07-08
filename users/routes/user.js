@@ -13,6 +13,7 @@ router.get('/', function(req, res, next) {
 router.post('/addusers', users.AddUsers);
 router.post('/authenticate',users.login);
 router.post('/signup1',users.SignUp);
-router.post('/findUser',users.findUser);
+router.put('/update/:id',users.updateUser);
+router.get('/findUser/:id',users.findUser);
 router.get('/getall',users.getUsers);
 module.exports = router;

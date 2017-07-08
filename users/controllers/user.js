@@ -120,7 +120,7 @@ module.exports= {
   },
     findUser:function(req, res, next) {
         user.findOne({
-            username: req.body.username
+            username: req.params.id
         }, function(err, user) {
             if (err) throw err;
 
@@ -130,5 +130,18 @@ module.exports= {
 
 
             });
+    },
+    updateUser:function(req, res, next) {
+        user.findOneAndUpdate({
+            username: req.params.id
+        },req.body, function(err, user) {
+            if (err) throw err;
+
+            if (!user) {
+                return res.status(404).json();
+            } else res.status(200).json(user);
+
+
+        });
     }
 }
