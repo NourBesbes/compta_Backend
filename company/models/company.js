@@ -9,7 +9,7 @@ var User = require('../../users/models/user.js');
 var CompanySchema = new Schema({
     name:String,
     matricule : String,
-    login:String,
+    adress:String,
     user : [{ type: Schema.Types.ObjectId, ref: 'User' }],
     //periode: [{ type: Schema.Types.ObjectId, ref: 'PeriodeComptable' }],
 

@@ -9,7 +9,7 @@ var company = require('../controllers/company');
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
-router.post('/addcompany', company.addCompany);
+router.post('/add', company.addCompany);
 router.delete('/deletecompany/:id', company.deleteCompany);
 router.get('/findcompany/:id', company.FindById);
 router.get('/listalll', company.listAll);

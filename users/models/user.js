@@ -11,29 +11,27 @@ var UserSchema = new Schema({
     username:{
         type: String,
         unique: true,
-        required: true
+
     },
     email:{
-        type: String,
-        required: true
+        type: String
+
     },
     role :{
-        type: String,
-        required: true
+        type: String
     },
     password:{
-        type: String,
-        required: true
+        type: String
     },
     first_name:{
-        type: String,
-        required: true
+        type: String
+
     },
     last_name : {
-        type: String,
-        required: true
-    }
-  //  company : [{ type: Schema.Types.ObjectId, ref: 'Company' }]
+        type: String
+      
+    },
+    company : { type: Schema.Types.ObjectId, ref: 'Company' }
 });
 
 

@@ -81,6 +81,7 @@ module.exports= {
        first_name:req.body.firstName,
        last_name:req.body.lastName,
        email:req.body.email,
+       company:req.body.company,
       role:"user"
     });
     // save the user
