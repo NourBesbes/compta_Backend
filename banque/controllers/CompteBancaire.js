@@ -25,9 +25,11 @@ module.exports= {
             if (err) throw err;
 
             // delete him
-            comptebancaire.remove(function(err) {
-                if (err) throw err;
-
+            comptebancaire.remove(function(err,banque) {
+                if(err){
+                    res.send(err);
+                }
+                res.json(banque);
                 console.log('Compte successfully deleted!');
             });
         });
@@ -40,6 +42,41 @@ module.exports= {
             console.log(compte);
             res.json(compte)
         });
+    },
+
+// Update
+    update : function(req, res, next) {
+        var banque = req.body;
+        console.log(banque);
+        var id = req.params.id
+        var updBanque = {};
+
+        if (banque.Banque) {
+            updBanque.Banque = banque.Banque;
+        }
+        if (banque.swift) {
+            updBanque.swift = banque.swift;
+        }
+        if (banque.IBAN) {
+            updBanque.IBAN = banque.IBAN;
+        }
+        if (banque.name) {
+            updBanque.name = banque.name;
+        }
+
+        if (!updBanque) {
+            res.status(400);
+            res.json({
+                "error": "Bad Data"
+            });
+        } else {
+            CompteBancaire.update({_id: req.params.id}, updBanque, {}, function (err, banque) {
+                if (err) {
+                    res.send(err);
+                }
+                res.json(banque);
+            });
+        }
     },
 
 

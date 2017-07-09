@@ -15,5 +15,5 @@ router.get('/', function(req, res, next) {
 router.post('/add', banque.addCompte);
 router.delete('/delete/:id', banque.deleteCompte);
 router.get('/listall', banque.listAll);
-
+router.put('/update/:id', banque.update);
 module.exports = router;

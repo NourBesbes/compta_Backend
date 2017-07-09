@@ -48,5 +48,4 @@ listAll: function(req,res,next) {
         res.json(comp)
     });
 }
-
 }

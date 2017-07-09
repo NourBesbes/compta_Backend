@@ -191,5 +191,19 @@ module.exports= {
 
         });
         res.json("ok")
-    }
+    },
+    delete: function (req, res, next) {
+        Transaction.findById(req.params.id , function(err, transaction) {
+            if (err) throw err;
+
+            // delete him
+            transaction.remove(function(err,tran) {
+                if(err){
+                    res.send(err);
+                }
+                res.json(tran);
+                console.log('Transaction successfully deleted!');
+            });
+        });
+    },
 }
