@@ -11,12 +11,13 @@ module.exports= {
         newcompany=new company({
             name:req.body.name,
             matricule : req.body.matricule,
+            adress : req.body.adress
 
 
         });
-        newcompany.save(function(err) {
+        newcompany.save(function(err,company) {
             if (err) throw err;
-            console.log("company added");
+           else res.json(company);
 
     })
 },

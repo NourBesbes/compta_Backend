@@ -81,6 +81,7 @@ module.exports= {
        first_name:req.body.firstName,
        last_name:req.body.lastName,
        email:req.body.email,
+       company:req.body.company,
       role:"user"
     });
     // save the user
@@ -120,7 +121,7 @@ module.exports= {
   },
     findUser:function(req, res, next) {
         user.findOne({
-            username: req.body.username
+            username: req.params.id
         }, function(err, user) {
             if (err) throw err;
 
@@ -130,5 +131,18 @@ module.exports= {
 
 
             });
+    },
+    updateUser:function(req, res, next) {
+        user.findOneAndUpdate({
+            username: req.params.id
+        },req.body, function(err, user) {
+            if (err) throw err;
+
+            if (!user) {
+                return res.status(404).json();
+            } else res.status(200).json(user);
+
+
+        });
     }
 }
