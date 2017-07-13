@@ -36,11 +36,11 @@ module.exports= {
                 var endDate = new Date(endDateArr[2]+"-"+endDateArr[1]+"-"+endDateArr[0]);}
 
                 if ((j.Debit&& startDate <= j.Date && j.Date <= endDate )|(j.Debit&&!req.body.startDate&&!req.body.endDate)){
-                    Depenses.push({" ":"-"+j.Debit})
+                    Depenses.push({"valeur":"-"+j.Debit,"libelle":j.Libelle})
 
                 }
                 else if ((j.Credit&& req.body.startDate <= j.Date && j.Date <= req.body.endDate )|(j.Credit&&!req.body.startDate&&!req.body.endDate)){
-                    Recette.push({" ":"+"+j.Credit})
+                    Recette.push({"valeur":"+"+j.Credit,"libelle":j.Libelle})
 
                 }
             });
