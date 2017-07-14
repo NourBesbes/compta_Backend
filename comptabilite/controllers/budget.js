@@ -13,6 +13,7 @@ module.exports= {
         });
         newbudget.save(function(err) {
             if (err) throw err;
+            res.json("Budget added")
             console.log("Budget added");
         })
     },
@@ -28,17 +29,20 @@ module.exports= {
             if (err)
                 return next(err);
             console.log(sousBudget);
+            res.json(sousBudget);
         })
     },
     deleteBudget: function (req, res, next) {
-        budget.findById(req.params.id , function(err, budget) {
+        budget.findById(req.params.id , function(err, b) {
             if (err) throw err;
 
             // delete him
-            comp.remove(function(err) {
-                if (err) throw err;
-
-                console.log('company successfully deleted!');
+            b.remove(function(err) {
+                if(err){
+                    res.send(err);
+                }
+                res.json(b);
+                console.log('budget successfully deleted!');
             });
         });
     },
@@ -55,6 +59,39 @@ module.exports= {
             // object of the budget
             res.json(budget);
         });
+    },
+    getSousBudget: function (req, res, next) {
+        budget.find({ _id: req.params.id }, function(err, budget) {
+            if (err) throw err;
+
+            // object of the budget
+            res.json(budget)
+        });
+    },
+    // Update
+    update : function(req, res, next) {
+        var b = req.body;
+        console.log(b);
+        var id = req.params.id
+        var updBudget = {};
+
+        if (b.name) {
+            updBudget.name = b.name;
+        }
+
+        if (!updBudget) {
+            res.status(400);
+            res.json({
+                "error": "Bad Data"
+            });
+        } else {
+            budget.update({_id: req.params.id}, updBudget, {}, function (err, b) {
+                if (err) {
+                    res.send(err);
+                }
+                res.json(b);
+            });
+        }
     },
 
 }
