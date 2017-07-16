@@ -8,14 +8,8 @@ var nodemailer = require("nodemailer");
 var jwt         = require('jwt-simple');
 var passport	= require('passport');
 var config      = require('../config/database'); // get db config file
-var smtpTransport = nodemailer.createTransport({
-    service: "gmail",
-    host: "smtp.gmail.com",
-    auth: {
-        user: "devstrikerdev@gmail.com",
-        pass: "12345678dev"
-    }
-});
+
+
 function sendEmail ( _name, _email, _subject, _message) {
     mandrill('/messages/send', {
         message: {
@@ -62,7 +56,7 @@ module.exports= {
           // if user is found and password is right create a token
           var token = jwt.encode(user, config.secret);
           // return the information including token as JSON
-          res.json({success: true, token: 'JWT ' + token, role:user.role,username:user.username});
+          res.json({success: true, token: 'JWT ' + token, role:user.role,username:user.username,company:user.company});
         } else {
           res.send({success: false, msg: 'Authentication failed. Wrong password.'});
         }
@@ -82,7 +76,7 @@ module.exports= {
        last_name:req.body.lastName,
        email:req.body.email,
        company:req.body.company,
-      role:"user"
+      role:req.body.role
     });
     // save the user
     newUser.save(function(err) {
@@ -95,20 +89,28 @@ module.exports= {
 },
 
     AddUsers: function(req,res,next) {
-
+        var smtpTransport = nodemailer.createTransport({
+            service: "gmail",
+            host: "smtp.gmail.com",
+            auth: {
+                user: "devstrikerdev@gmail.com",
+                pass: "12345678dev"
+            }
+        });
         var mailOptions={
             to : req.body.to ,
-            subject : "test",
-            text : "this is a test"
+            subject : "Register Yourself",
+            text : req.body.text 
         };
         console.log(mailOptions);
         smtpTransport.sendMail(mailOptions, function(error, response){
             if(error){
                 console.log(error);
-                res.end("error");
+                res.status(404).json();
             }else{
-                console.log("Message sent: " + response.message);
-                res.end("sent");
+                //console.log("Message sent: " + response.message);
+                //res.end("sent");
+                res.json({success: true, msg: 'Successful added new user.'});
             }
         });
     },
@@ -119,6 +121,19 @@ module.exports= {
       res.status(200).json(users);
     });
   },
+    roleUser:function(req, res, next) {
+        user.findOne({
+            username: req.params.id
+        }, function(err, user) {
+            if (err) throw err;
+
+            if (!user) {
+                return res.status(404).json();
+            } else res.status(200).json(user.role);
+
+
+        });
+    },
     findUser:function(req, res, next) {
         user.findOne({
             username: req.params.id
@@ -130,7 +145,7 @@ module.exports= {
             } else res.status(200).json(user);
 
 
-            });
+            }).populate('company');
     },
     updateUser:function(req, res, next) {
         user.findOneAndUpdate({
