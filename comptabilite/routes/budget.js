@@ -15,7 +15,7 @@ router.post('/addsousbudget/:id', budget.addSousBudget);
 router.get('/listAll', budget.listAll);
 
 router.delete('/deletebudget/:id', budget.deleteBudget);
-router.post('/deleteousbudget/:id', budget.deleteSousBudget);
+router.post('/deletesousbudget/:id', budget.deleteSousBudget);
 router.get('/getbudget/:name', budget.FindByName);
 router.put('/update/:id', budget.update);
 router.get('/getSousBudget/:name',budget.FindByName);

@@ -46,10 +46,12 @@ module.exports= {
             });
         });
     },
+
     deleteSousBudget: function (req, res, next) {
-        budget.update({ _id: req.params.id }, { "$pull": { "sousBudget": req.body.sousBudget  }},
-            { safe: true, multi:true }, function(err, obj) {
+        budget.update({ _id: req.params.id }, { $pull: { sousBudget: req.body.sousBudget}}, function(err, obj) {
                 if (err) throw err;
+                console.log(req.body);
+                res.json(obj)
             });
     },
     FindByName: function (req, res, next) {
