@@ -104,28 +104,31 @@ module.exports= {
         var i=0;
         var k=0;
         var resultat=[];
-        Transaction.find({}).sort('SousBudget').exec(function(err, transaction) {
+        Transaction.find({}).sort('sousBudget').exec(function(err, transaction) {
             tab.push(transaction[0]);
-            for(i = 0; i < transaction.length;i++){
 
-                if (transaction[i].hasOwnProperty("sousBudget")) {
-                    console.log(transaction[i]);
-                    if ((transaction[i].sousBudget) && (transaction[i - 1].sousBudget)) {
-                        console.log(transaction[i].sousBudget + "    " + transaction[i - 1].sousBudget)
-                        if (transaction[i].sousBudget == transaction[i - 1].sousBudget) {
-                            tab.push(t);
-                        }
-                        else {
-                            resultat.push({"sous Budget": transaction[i].sousBudget, "Transaction": transaction[i]});
-                            tab = [];
-                        }
+            for(i = 1; i < transaction.length;i++) {
+
+                if (!(transaction[i].sousBudget == undefined) && !(transaction[i - 1].sousBudget == undefined)) {
+
+                    console.log(transaction[i].sousBudget + "    " + transaction[i - 1].sousBudget)
+                    if (transaction[i].sousBudget == transaction[i - 1].sousBudget) {
+                        console.log("ok");
+                        tab.push(transaction[i]);
+                    }
+                    else {
+                        resultat.push({"sous Budget": transaction[i-1].sousBudget, "Transaction": tab});
+                        tab = [];
                     }
                 }
-                if(i==transaction.length){
+
+
+                if (i == (transaction.length - 1)) {
+                    resultat.push({"sous Budget": transaction[i].sousBudget, "Transaction": tab});
                     res.json(resultat);
                 }
-
             }
+
             if (err)
                 return next(err);
 
