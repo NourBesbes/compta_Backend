@@ -103,41 +103,52 @@ module.exports= {
         var tab =[];
         var i=0;
         var k=0;
+        var dep=0;
+        var recette=0;
         var resultat=[];
+        var finalresult=[];
         Transaction.find({}).sort('sousBudget').exec(function(err, transaction) {
             tab.push(transaction[0]);
 
-            for(i = 1; i < transaction.length;i++) {
+            for (i = 1; i < transaction.length; i++) {
 
                 if (!(transaction[i].sousBudget == undefined) && !(transaction[i - 1].sousBudget == undefined)) {
-
-                    console.log(transaction[i].sousBudget + "    " + transaction[i - 1].sousBudget)
                     if (transaction[i].sousBudget == transaction[i - 1].sousBudget) {
-                        console.log("ok");
                         tab.push(transaction[i]);
                     }
                     else {
-                        resultat.push({"sous Budget": transaction[i-1].sousBudget, "Transaction": tab});
+                        resultat.push({"sous Budget": transaction[i - 1].sousBudget, "Transactions": tab});
                         tab = [];
                     }
                 }
 
-
                 if (i == (transaction.length - 1)) {
-                    resultat.push({"sous Budget": transaction[i].sousBudget, "Transaction": tab});
+                    resultat.push({"sousBudget": transaction[i].sousBudget, "Transactions": tab});
+                    /*resultat.forEach(function (res) {
+                        for (i = 1; i < res.Transactions.length; i++) {
+                            if (res.Transactions[i].Credit){recette=recette+res.Transactions[i].Credit}
+                            if (res.Transactions[i].Debit){dep=dep+res.Transactions[i].Debit}
+                        if(i==res.Transactions.length){
+                            finalresult.push({"Sous Budget":res.Transactions[i].sousBudget,"Depenses":dep,"Recette":recette});
+                            recette=0;
+                            dep=0;
+                        }
+                        }
+                    });*/
+                 //   console.log(finalresult);
+
                     res.json(resultat);
+
                 }
             }
 
             if (err)
                 return next(err);
-
-        });
+            });
 
 
 
         // return {"budget":  , "sousbudget": ,"Montant":}
 
     }
-
-}
+};
