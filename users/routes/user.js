@@ -16,5 +16,7 @@ router.post('/signup1',users.SignUp);
 router.put('/update/:id',users.updateUser);
 router.get('/findUser/:id',users.findUser);
 router.get('/findUserRole/:id',users.roleUser);
+router.delete('/deleteUser/:id',users.deleteUser);
+router.get('/getUsersFromCompany/:idC',users.getUserFromCompany);
 router.get('/getall',users.getUsers);
 module.exports = router;

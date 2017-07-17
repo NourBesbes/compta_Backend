@@ -159,5 +159,35 @@ module.exports= {
 
 
         });
+    },
+    getUserFromCompany:function(req, res, next) {
+        user.find({
+            company:req.params.idC
+        }, function(err, user) {
+            if (err) throw err;
+
+            if (!user) {
+                return res.status(404).json();
+            } else res.status(200).json(user);
+
+
+        });
+    },
+    deleteUser:function(req,res)
+    {
+        user.findOne({
+            username:req.params.id
+        }, function(err, user) {
+            if (err) throw err;
+
+            // delete him
+            user.remove(function(err) {
+                if(err){
+                    res.send(err);
+                }
+                res.json(user);
+                console.log('user successfully deleted!');
+            });
+        });
     }
 }
