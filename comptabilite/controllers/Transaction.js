@@ -155,7 +155,8 @@ module.exports= {
 
 
     listAll: function (req, res, next) {
-        Transaction.find({}, function (err, transaction) {
+        Transaction.find().populate({ path: 'budget', select: 'name' }).
+        exec(function (err, transaction) {
             if (err)
                 return next(err);
             res.json(transaction)
@@ -192,6 +193,7 @@ module.exports= {
         });
         res.json("ok")
     },
+
     delete: function (req, res, next) {
         Transaction.findById(req.params.id , function(err, transaction) {
             if (err) throw err;
@@ -206,4 +208,6 @@ module.exports= {
             });
         });
     },
+    
+
 }
