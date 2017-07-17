@@ -19,5 +19,4 @@ router.post('/addinfo/:id', transaction.AddInfo);
 router.post('/upload', transaction.uploadFile)
 router.delete('/delete/:id', transaction.delete);
 
-
 module.exports = router;

@@ -19,5 +19,5 @@ router.post('/deletesousbudget/:id', budget.deleteSousBudget);
 router.get('/getbudget/:name', budget.FindByName);
 router.put('/update/:id', budget.update);
 router.get('/getSousBudget/:name',budget.FindByName);
-//router.post('/GetExerciceComptable',budget.GetExerciceComptable);
+router.get('/GetExerciceComptable',budget.GetExerciceComptable);
 module.exports = router;

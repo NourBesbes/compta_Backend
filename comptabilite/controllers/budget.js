@@ -20,11 +20,13 @@ module.exports= {
         })
     },
     listAll: function (req, res, next) {
-        budget.find({}, function (err, budget) {
+        budget.find().populate('transactions').
+        exec(function (err, budget) {
             if (err)
                 return next(err);
             res.json(budget)
         });
+
     },
     addSousBudget: function (req, res, next) {
         budget.update({_id:req.params.id}, {$addToSet: {sousBudget: req.body.sousBudget}}, {multi:  true},function (err, sousBudget) {
@@ -97,52 +99,42 @@ module.exports= {
             });
         }
     },
-    /*GetExerciceComptable: function (req, res, next) {
-        var b ;
-        var desp =0;
-        var rec =0;
-        var resultat;
+    GetExerciceComptable: function (req, res, next) {
+        var tab =[];
+        var i=0;
+        var k=0;
+        var resultat=[];
+        Transaction.find({}).sort('SousBudget').exec(function(err, transaction) {
+            tab.push(transaction[0]);
+            for(i = 0; i < transaction.length;i++){
 
-        budget.find({}, function (err, budget) {
-            if (err)
-                return next(err);
-            budget.forEach(function(j) {
-                i++;
-                Transaction.find({budget: j}, function (err, transaction) {
-                    transaction.forEach(function (t) {
-                        if (req.body.endDate && req.body.startDate) {
-                            var startDateArr = req.body.startDate.split('/');
-                            var startDate = new Date(startDateArr[2] + "-" + startDateArr[1] + "-" + startDateArr[0]);
-                            var endDateArr = req.body.endDate.split('/');
-                            var endDate = new Date(endDateArr[2] + "-" + endDateArr[1] + "-" + endDateArr[0]);
+                if (transaction[i].hasOwnProperty("sousBudget")) {
+                    console.log(transaction[i]);
+                    if ((transaction[i].sousBudget) && (transaction[i - 1].sousBudget)) {
+                        console.log(transaction[i].sousBudget + "    " + transaction[i - 1].sousBudget)
+                        if (transaction[i].sousBudget == transaction[i - 1].sousBudget) {
+                            tab.push(t);
                         }
-
-                        if ((t.Debit && startDate <= t.Date && t.Date <= endDate ) | (t.Debit && !req.body.startDate && !req.body.endDate)) {
-                            desp = desp + parseInt(t.Debit);
-                            // Depenses.push({"valeur": "-" + j.Debit, "libelle": j.Libelle})
-
+                        else {
+                            resultat.push({"sous Budget": transaction[i].sousBudget, "Transaction": transaction[i]});
+                            tab = [];
                         }
-                        else if ((t.Credit && req.body.startDate <= t.Date && t.Date <= req.body.endDate ) | (t.Credit && !req.body.startDate && !req.body.endDate)) {
-                            //Recette.push({"valeur": "+" + j.Credit, "libelle": j.Libelle})
-                            rec = rec + parseInt(t.Credit);
-                        }
-                    }).then(function(value) {
-                        desp=0;
-                        rec=0;
-                        resultat.push({"budget":j.name,"depenses":desp,"recettes":rec})
-                    });
-                });
-                if (i = budget.length) {
-                    res.json(resultat)
+                    }
+                }
+                if(i==transaction.length){
+                    res.json(resultat);
                 }
 
-            });
+            }
+            if (err)
+                return next(err);
+
         });
 
 
 
         // return {"budget":  , "sousbudget": ,"Montant":}
 
-    }*/
+    }
 
 }

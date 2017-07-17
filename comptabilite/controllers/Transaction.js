@@ -174,22 +174,30 @@ module.exports= {
 
     AddInfo:function (req,res) {
         var b ;
-        budget.find({name:req.body.budget}, function (err, res) {
-            console.log(res);
+        var budgetId;
+
+        budget.find({name:req.body.budget}, function (err, result) {
             Transaction.update(
                 {_id:req.params.id},
                 {
                     $set:{
-                      budget: res,
+                      budget: result,
                       sousBudget: req.body.sousBudget
-
                 }}
                 ,{new: true}, function (err,res) {
                     if (err) return console.error(err);
+                    Transaction.findById(req.params.id, function (err, trans) {
+                        if (err) throw err;
+            budget.update({_id:result[0]["_id"]},{$addToSet: {transactions: trans}}, {multi:  true}
+
+                , function (err,res) {
+                    console.log(res)
+                    if (err) return console.error(err);
+                })
+                });
                 })
 
             if (err) throw err;
-
         });
         res.json("ok")
     },
@@ -208,6 +216,5 @@ module.exports= {
             });
         });
     },
-    
 
 }
