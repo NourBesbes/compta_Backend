@@ -20,4 +20,6 @@ router.get('/getbudget/:name', budget.FindByName);
 router.put('/update/:id', budget.update);
 router.get('/getSousBudget/:name',budget.FindByName);
 router.get('/GetExerciceComptable',budget.GetExerciceComptable);
+router.post('/GetExerciceComptable',budget.GetExerciceComptable);
+
 module.exports = router;

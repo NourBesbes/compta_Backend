@@ -107,7 +107,7 @@ module.exports= {
         var recette=0;
         var resultat=[];
         var finalresult=[];
-        Transaction.find({}).sort('sousBudget').exec(function(err, transaction) {
+        Transaction.find({}).sort('sousBudget').populate({path:'budget',select:'name'}).exec(function(err, transaction) {
             tab.push(transaction[0]);
 
             for (i = 1; i < transaction.length; i++) {
@@ -117,38 +117,53 @@ module.exports= {
                         tab.push(transaction[i]);
                     }
                     else {
-                        resultat.push({"sous Budget": transaction[i - 1].sousBudget, "Transactions": tab});
+                        resultat.push({"sousBudget": transaction[i - 1].sousBudget, "Transactions": tab});
                         tab = [];
-                    }
+                    };
                 }
 
                 if (i == (transaction.length - 1)) {
+                    tab.push(transaction[i]);
                     resultat.push({"sousBudget": transaction[i].sousBudget, "Transactions": tab});
-                    /*resultat.forEach(function (res) {
-                        for (i = 1; i < res.Transactions.length; i++) {
-                            if (res.Transactions[i].Credit){recette=recette+res.Transactions[i].Credit}
-                            if (res.Transactions[i].Debit){dep=dep+res.Transactions[i].Debit}
-                        if(i==res.Transactions.length){
-                            finalresult.push({"Sous Budget":res.Transactions[i].sousBudget,"Depenses":dep,"Recette":recette});
+                    resultat.forEach(function (res) {
+                        if (req.body.endDate&&req.body.startDate){
+                            var startDateArr = req.body.startDate.split('/');
+                            var startDate = new Date(startDateArr[2]+"-"+startDateArr[1]+"-"+startDateArr[0]);
+                            var endDateArr = req.body.endDate.split('/');
+                            var endDate = new Date(endDateArr[2]+"-"+endDateArr[1]+"-"+endDateArr[0]);}
+
+                        for (var k = 0; k < res.Transactions.length; k++) {
+
+                            if ((res.Transactions[k].Debit&& startDate <= res.Transactions[k].Date && res.Transactions[k].Date <= endDate )
+                                |(res.Transactions[k].Debit&&!req.body.startDate&&!req.body.endDate))
+                                         {
+                                             dep=dep+res.Transactions[k].Debit
+                                         }
+
+                            else if ((res.Transactions[k].Credit&& req.body.startDate <= res.Transactions[k].Date && res.Transactions[k].Date <= req.body.endDate )
+                                |(res.Transactions[k].Credit&&!req.body.startDate&&!req.body.endDate))
+                                          {
+                                              recette=recette+res.Transactions[k].Credit ;
+
+                                          }
+                        if(k==res.Transactions.length-1){
+                            if(res.Transactions[k].budget[0]){
+                            finalresult.push({"Budget":res.Transactions[k].budget[0]["name"],"SousBudget":res.Transactions[k].sousBudget,"Depenses":dep,"Recette":recette});
                             recette=0;
                             dep=0;
                         }
                         }
-                    });*/
-                 //   console.log(finalresult);
+                        }
+                    });
 
-                    res.json(resultat);
+                   res.json(finalresult);
 
                 }
             }
 
             if (err)
-                return next(err);
+                return res.send();
             });
-
-
-
-        // return {"budget":  , "sousbudget": ,"Montant":}
 
     }
 };

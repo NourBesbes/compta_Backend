@@ -15,16 +15,16 @@ var http = require('http'),
     formidable = require('formidable'),
     fs = require('fs'),
     path = require('path');
-var Recette=[];
-var Depenses =[];
-var i =0;
 var moment = require('moment');
 
 module.exports= {
 
     RemplirExCompt: function (req, res, next) {
-
-        Transaction.find({}, function (err, transaction) {
+        var i =0;
+        var Recette=[];
+        var Depenses =[];
+        Transaction.find().populate({ path: 'budget', select: 'name' }).
+        exec(function (err, transaction) {
             if (err)
                 return next(err);
             transaction.forEach(function(j){
@@ -35,12 +35,14 @@ module.exports= {
                 var endDateArr = req.body.endDate.split('/');
                 var endDate = new Date(endDateArr[2]+"-"+endDateArr[1]+"-"+endDateArr[0]);}
 
-                if ((j.Debit&& startDate <= j.Date && j.Date <= endDate )|(j.Debit&&!req.body.startDate&&!req.body.endDate)){
-                    Depenses.push({"valeur":"-"+j.Debit,"libelle":j.Libelle})
+                if ((j.Debit&& startDate <= j.Date && j.Date <= endDate && (!(j.budget[0]== undefined))  )|(j.Debit&&!req.body.startDate&&!req.body.endDate&&(!(j.budget[0]== undefined))))
+                {
+                    Depenses.push({"valeur":"-"+j.Debit,"libelle":j.Libelle,"sousBudget":j.sousBudget,"budget":j.budget[0]["name"]})
 
                 }
-                else if ((j.Credit&& req.body.startDate <= j.Date && j.Date <= req.body.endDate )|(j.Credit&&!req.body.startDate&&!req.body.endDate)){
-                    Recette.push({"valeur":"+"+j.Credit,"libelle":j.Libelle})
+                else if ((j.Credit&& req.body.startDate <= j.Date && j.Date <= req.body.endDate&&(!(j.budget[0]== undefined) ))|(j.Credit&&!req.body.startDate&&!req.body.endDate&&(!(j.budget[0]== undefined))))
+                {
+                    Recette.push({"valeur":"+"+j.Credit,"libelle":j.Libelle,"sousBudget":j.sousBudget,"budget":j.budget[0]["name"]})
 
                 }
             });
