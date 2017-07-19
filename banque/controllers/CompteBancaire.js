@@ -3,7 +3,7 @@
  */
 
 var express = require('express');
-var CompteBancaire = require('../models/CompteBancaire.js');
+var CompteBancaire = require('../models/CompteBancaire');
 const util = require('util');
 module.exports= {
 
@@ -17,7 +17,8 @@ module.exports= {
         })
         comptebancaire.save(function(err) {
             if (err) throw err;
-            console.log('account added');
+           // console.log('account added');
+            res.json(comptebancaire);
         });
     },
 
@@ -79,7 +80,14 @@ module.exports= {
             });
         }
     },
-
+getbycompany:function (req, res, next) {
+    CompteBancaire.find({company:req.params.id}, function(err, compte) {
+        if (err) throw err;
+        // object of all the users
+        console.log(compte);
+        res.json(compte)
+    });
+},
 
     Synchroniser: function (req, res, next) {
         //TODO: Etudier l'integration d'API existantes de type "Banking"
