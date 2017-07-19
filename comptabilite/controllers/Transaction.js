@@ -90,7 +90,8 @@ module.exports= {
                             Date :date ,
                             Debit : j.Debit ,
                             Credit : j.Credit ,
-                            Libelle : j.Libelle
+                            Libelle : j.Libelle,
+                            company:req.params.id
 
                         });
                         newTransaction.save()

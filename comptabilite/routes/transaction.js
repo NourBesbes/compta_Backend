@@ -16,7 +16,7 @@ router.get('/getExComp', transaction.RemplirExCompt);
 router.post('/getExComp', transaction.RemplirExCompt);
 router.post('/addinfo/:id', transaction.AddInfo);
 // Upload route.
-router.post('/upload', transaction.uploadFile)
+router.post('/upload/:id', transaction.uploadFile)
 router.delete('/delete/:id', transaction.delete);
 
 module.exports = router;
