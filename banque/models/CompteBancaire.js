@@ -9,7 +9,8 @@ var CompteBancaireSchema = new Schema({
     name:String,
     swift : String,
     IBAN:String,
-    Banque:String
+    Banque:String,
+    company : { type: Schema.Types.ObjectId, ref: 'Company' }
 
 });
 

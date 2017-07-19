@@ -14,8 +14,15 @@ var app = express();
 var DB = "mongodb://admin:admin@ds023520.mlab.com:23520/devstriker";
 var morgan      = require('morgan');
 var mongoose    = require('mongoose');
+var passport	= require('passport');
+var jwt         = require('jwt-simple');
+app.use(morgan('dev'));
 
+// Use the passport package in our application
+app.use(passport.initialize());
 
+// pass passport for configuration
+require('./users/config/passport')(passport);
 
 //enable cors
 app.use(function(req, res, next) {

@@ -12,7 +12,8 @@ module.exports= {
             name:req.body.name,
             swift :req.body.swift,
             IBAN:req.body.IBAN,
-            Banque:req.body.Banque
+            Banque:req.body.Banque,
+            company:req.body.company
         })
         comptebancaire.save(function(err) {
             if (err) throw err;

@@ -9,6 +9,20 @@ var jwt         = require('jwt-simple');
 var passport	= require('passport');
 var config      = require('../config/database'); // get db config file
 
+var path = require('path');
+
+var multer = require('multer');
+
+var Uploader = require('s3-image-uploader');
+var upload = multer({ dest: 'uploads/' });
+
+var uploader = new Uploader({
+    aws : {
+        key : "AKIAIQTGLJKQOWWQPONA",
+        secret : "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"
+    },
+    websockets : false
+});
 
 function sendEmail ( _name, _email, _subject, _message) {
     mandrill('/messages/send', {
@@ -189,5 +203,47 @@ module.exports= {
                 console.log('user successfully deleted!');
             });
         });
+    },
+    uploadImage:function(req, res, next){
+
+        uploader.upload({
+                fileId : 'someUniqueIdentifier',
+                bucket : 'node-sdk-sample-1234',
+                source : req.file.path,
+                name : req.file.originalname
+            },
+            function(data){ // success
+                console.log('upload success:', data);
+                // execute success code
+            },
+            function(errMsg, errObject){ //error
+                if(errMsg)
+                    console.error('unable to upload: ' + errMsg + ':', errObject);
+                // execute error code
+            });
+        console.log("file "+req.file.path);
+        res.json({lien:"https://s3.amazonaws.com/node-sdk-sample-1234/"+req.file.originalname});
+
+    },
+    memberinfo:function(req, res) {
+        var token = getToken(req.headers);
+        if (token) {
+            var decoded = jwt.decode(token, config.secret);
+            console.log(decoded);
+            user.findOne({
+                username: decoded.username,
+                role:decoded.role
+            }, function(err, user) {
+                if (err) throw err;
+
+                if (!user) {
+                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+                } else {
+                    res.json({success: true, msg: 'Welcome in the member area ' + user.first_name + '!'});
+                }
+            });
+        } else {
+            return res.status(403).send({success: false, msg: 'No token provided.'});
+        }
     }
 }
