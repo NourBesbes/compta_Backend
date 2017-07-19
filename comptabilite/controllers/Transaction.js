@@ -13,8 +13,8 @@ var fs=require("fs");
 var xlConverter = require("xls-to-json");
 var http = require('http'),
     formidable = require('formidable'),
-    fs = require('fs'),
-    path = require('path');
+    fs = require('fs');
+ var   path = require('path');
 var moment = require('moment');
 
 module.exports= {
@@ -56,11 +56,14 @@ module.exports= {
     },
 
     uploadFile : function (req,res) {
+        console.log("hii");
         var form = new formidable.IncomingForm();
         form.multiples = false;
+        console.log("hii2");
 
-        form.uploadDir = path.join(process.env.PWD, './public/uploads');
-
+            var p= path.join( './public/uploads');
+        form.uploadDir=p;
+        console.log("hii3");
         form.on('file', function(field, file) {
             fs.rename(file.path, path.join(form.uploadDir, file.name));
             console.log(file.name);
@@ -90,7 +93,8 @@ module.exports= {
                             Date :date ,
                             Debit : j.Debit ,
                             Credit : j.Credit ,
-                            Libelle : j.Libelle
+                            Libelle : j.Libelle,
+                            company:req.params.id
 
                         });
                         newTransaction.save()
@@ -131,7 +135,8 @@ module.exports= {
                                 Date :date ,
                                 Debit : j.Debit ,
                                 Credit : j.Credit ,
-                                Libelle : j.Libelle
+                                Libelle : j.Libelle,
+                                company:req.params.id
 
                             });
                             newTransaction.save()
@@ -156,8 +161,8 @@ module.exports= {
     },
 
 
-    listAll: function (req, res, next) {
-        Transaction.find().populate({ path: 'budget', select: 'name' }).
+    listbycompany: function (req, res, next) {
+        Transaction.find({company:req.params.id}).populate({ path: 'budget', select: 'name' }).
         exec(function (err, transaction) {
             if (err)
                 return next(err);

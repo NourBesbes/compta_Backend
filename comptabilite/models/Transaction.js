@@ -4,7 +4,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var CompteBancaire = require('../../banque/models/CompteBancaire.js');
-var Budget = require('../models/Budget.js');
+var Budget = require('../models/Budget');
+var Company = require('../../company/models/company');
 
 var TransactionSchema = new Schema({
     //TransactionId:String,
@@ -17,7 +18,8 @@ var TransactionSchema = new Schema({
     Remboursement : Number,
     budget : [{ type: Schema.Types.ObjectId, ref: 'Budget' }],
     sousBudget : String ,
-    CompteBancaire : [{ type: Schema.Types.ObjectId, ref: 'CompteBancaire' }],
+    compteBancaire : [{ type: Schema.Types.ObjectId, ref: 'CompteBancaire' }],
+    company : { type: Schema.Types.ObjectId, ref: 'Company' }
 
 });
 
