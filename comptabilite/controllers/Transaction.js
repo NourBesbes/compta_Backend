@@ -160,6 +160,7 @@ module.exports= {
 
     },
 
+
     listbycompany: function (req, res, next) {
         Transaction.find({company:req.params.id}).populate({ path: 'budget', select: 'name' }).
         exec(function (err, transaction) {

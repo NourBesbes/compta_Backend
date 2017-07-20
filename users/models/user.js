@@ -6,7 +6,8 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcryptjs');
 var UserSchema = new Schema({
   imagePath:{
-      type: String
+      type: String,
+      default:"https://s3.amazonaws.com/node-sdk-sample-1234/web-user.jpg"
   },
     username:{
         type: String,

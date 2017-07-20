@@ -20,7 +20,6 @@ var TransactionSchema = new Schema({
     CompteBancaire : [{ type: Schema.Types.ObjectId, ref: 'CompteBancaire' }],
     company : { type: Schema.Types.ObjectId, ref: 'Company' }
 
-
 });
 
 var transaction = mongoose.model('Transaction', TransactionSchema);

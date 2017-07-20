@@ -82,7 +82,18 @@ module.exports= {
   if (!req.body.username || !req.body.password) {
     res.json({success: false, msg: 'Please pass name and password.'});
   } else {
-   var newUser = new user({
+      if(req.body.imagePath=="")
+      {   var newUser = new user({
+          username: req.body.username,
+          password: req.body.password,
+          first_name:req.body.firstName,
+          last_name:req.body.lastName,
+          email:req.body.email,
+          company:req.body.company,
+          role:req.body.role
+      });}
+      else
+      {var newUser = new user({
       username: req.body.username,
       password: req.body.password,
       imagePath: req.body.imagePath,
@@ -91,7 +102,7 @@ module.exports= {
        email:req.body.email,
        company:req.body.company,
       role:req.body.role
-    });
+    });}
     // save the user
     newUser.save(function(err) {
       if (err) {
