@@ -18,6 +18,8 @@ var TransactionSchema = new Schema({
     budget : [{ type: Schema.Types.ObjectId, ref: 'Budget' }],
     sousBudget : String ,
     CompteBancaire : [{ type: Schema.Types.ObjectId, ref: 'CompteBancaire' }],
+    company : { type: Schema.Types.ObjectId, ref: 'Company' }
+
 
 });
 

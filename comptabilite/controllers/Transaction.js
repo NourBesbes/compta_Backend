@@ -23,7 +23,7 @@ module.exports= {
         var i =0;
         var Recette=[];
         var Depenses =[];
-        Transaction.find().populate({ path: 'budget', select: 'name' }).
+        Transaction.find({company:req.params.id}).populate({ path: 'budget', select: 'name' }).
         exec(function (err, transaction) {
             if (err)
                 return next(err);
@@ -159,7 +159,6 @@ module.exports= {
         form.parse(req);
 
     },
-
 
     listbycompany: function (req, res, next) {
         Transaction.find({company:req.params.id}).populate({ path: 'budget', select: 'name' }).

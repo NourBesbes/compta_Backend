@@ -107,7 +107,7 @@ module.exports= {
         var recette=0;
         var resultat=[];
         var finalresult=[];
-        Transaction.find({}).sort('sousBudget').populate({path:'budget',select:'name'}).exec(function(err, transaction) {
+        Transaction.find({company:req.params.id}).sort('sousBudget').populate({path:'budget',select:'name'}).exec(function(err, transaction) {
             tab.push(transaction[0]);
 
             for (i = 1; i < transaction.length; i++) {

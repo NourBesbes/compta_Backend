@@ -12,11 +12,11 @@ router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 router.get('/getbycompany/:id', transaction.listbycompany);
-router.get('/getExComp', transaction.RemplirExCompt);
-router.post('/getExComp', transaction.RemplirExCompt);
+router.get('/getExComp/:id', transaction.RemplirExCompt);
+router.post('/getExComp/:id', transaction.RemplirExCompt);
 router.post('/addinfo/:id', transaction.AddInfo);
 // Upload route.
-router.post('/upload/:id', transaction.uploadFile)
+router.post('/upload/:id', transaction.uploadFile);
 router.delete('/delete/:id', transaction.delete);
 
 module.exports = router;
