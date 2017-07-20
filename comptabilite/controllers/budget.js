@@ -11,6 +11,7 @@ module.exports= {
     addBudget: function (req, res, next) {
         newbudget=new budget({
             name:req.body.name,
+            company:req.params.id
 
         });
         newbudget.save(function(err) {
@@ -20,7 +21,7 @@ module.exports= {
         })
     },
     listAll: function (req, res, next) {
-        budget.find().populate('transactions').
+        budget.find({company:req.params.id}).populate('transactions').
         exec(function (err, budget) {
             if (err)
                 return next(err);

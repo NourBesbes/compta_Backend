@@ -10,9 +10,9 @@ router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 
-router.post('/addbudget', budget.addBudget);
+router.post('/addbudget/:id', budget.addBudget);
 router.post('/addsousbudget/:id', budget.addSousBudget);
-router.get('/listAll', budget.listAll);
+router.get('/listAll/:id', budget.listAll);
 
 router.delete('/deletebudget/:id', budget.deleteBudget);
 router.post('/deletesousbudget/:id', budget.deleteSousBudget);

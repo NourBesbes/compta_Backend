@@ -10,7 +10,9 @@ var BudgetSchema = new Schema({
     sousBudget : [{type:String}],
   //  login:String,
     categorie : [{ type: Schema.Types.ObjectId, ref: 'Categorie' }],
-    transactions : [{ type: Schema.Types.ObjectId, ref: 'Transaction' }]
+    transactions : [{ type: Schema.Types.ObjectId, ref: 'Transaction' }],
+    company : { type: Schema.Types.ObjectId, ref: 'Company' }
+
 });
 
 var budget = mongoose.model('Budget', BudgetSchema);
